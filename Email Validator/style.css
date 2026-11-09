@@ -1,0 +1,170 @@
+/* Layout: one narrow tool column. Input and verdict on top, parsed address next, rule checklist below, examples last. */
+:root {
+  --bg: #eef1f4;
+  --surface: #ffffff;
+  --ink: #14202b;
+  --muted: #5a6b7a;
+  --line: #d5dce3;
+  --accent: #1f4fd8;
+  --accent-ink: #ffffff;
+  --good: #14804a;
+  --good-bg: #e2f4ea;
+  --bad: #b42318;
+  --bad-bg: #fde8e6;
+  --warn: #9a5b00;
+  --warn-bg: #fff1d6;
+  --font-body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1720;
+    --surface: #17212c;
+    --ink: #e6edf3;
+    --muted: #92a3b3;
+    --line: #2a3745;
+    --accent: #6f95ff;
+    --accent-ink: #0b1220;
+    --good: #52d08a;
+    --good-bg: #123023;
+    --bad: #ff8b7e;
+    --bad-bg: #3a1a18;
+    --warn: #f2b45a;
+    --warn-bg: #36280f;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1720;
+  --surface: #17212c;
+  --ink: #e6edf3;
+  --muted: #92a3b3;
+  --line: #2a3745;
+  --accent: #6f95ff;
+  --accent-ink: #0b1220;
+  --good: #52d08a;
+  --good-bg: #123023;
+  --bad: #ff8b7e;
+  --bad-bg: #3a1a18;
+  --warn: #f2b45a;
+  --warn-bg: #36280f;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+  padding-block: 40px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+main { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+h1 { font-size: 28px; line-height: 1.15; margin: 0; letter-spacing: -0.02em; text-wrap: balance; }
+.lede { color: var(--muted); margin: 6px 0 0; max-width: 56ch; }
+h2 {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin: 0 0 10px;
+}
+
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px; }
+
+label { display: block; font-weight: 600; margin-bottom: 8px; }
+.field { display: flex; gap: 10px; flex-wrap: wrap; }
+input[type="text"] {
+  flex: 1 1 240px;
+  min-width: 0;
+  font: 500 17px var(--font-mono);
+  color: var(--ink);
+  background: var(--bg);
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+input[type="text"]:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 40%, transparent); border-color: var(--accent); }
+input.is-valid { border-color: var(--good); }
+input.is-invalid { border-color: var(--bad); }
+button {
+  font: 600 15px var(--font-body);
+  border-radius: 8px;
+  border: 1.5px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  padding: 11px 16px;
+  cursor: pointer;
+}
+button:hover { border-color: var(--accent); }
+button:focus-visible { outline: 3px solid color-mix(in srgb, var(--accent) 40%, transparent); outline-offset: 1px; }
+
+.verdict {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  background: var(--bg);
+  color: var(--muted);
+}
+.verdict .dot { width: 10px; height: 10px; border-radius: 50%; background: currentColor; flex: none; }
+.verdict[data-state="valid"] { background: var(--good-bg); color: var(--good); }
+.verdict[data-state="invalid"] { background: var(--bad-bg); color: var(--bad); }
+.verdict[data-state="warn"] { background: var(--warn-bg); color: var(--warn); }
+.suggest { margin-top: 10px; font-size: 14px; color: var(--muted); }
+.suggest button { font: 500 14px var(--font-mono); padding: 3px 8px; margin-left: 4px; border-radius: 6px; color: var(--accent); }
+
+.parsed {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px;
+  min-height: 28px;
+  overflow-wrap: anywhere;
+}
+.parsed .local { color: var(--accent); }
+.parsed .at { color: var(--muted); padding-inline: 2px; }
+.parsed .domain { color: var(--ink); }
+.parsed .tld { color: var(--good); }
+.parsed .placeholder { color: var(--muted); font-family: var(--font-body); font-size: 14px; }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 10px; font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.legend span::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px; background: currentColor; }
+.legend .l { color: var(--accent); }
+.legend .d { color: var(--ink); }
+.legend .t { color: var(--good); }
+
+ul.rules { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.rules li { display: grid; grid-template-columns: 22px 1fr; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); align-items: start; }
+.rules li:last-child { border-bottom: 0; }
+.mark {
+  width: 20px; height: 20px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font: 700 12px var(--font-mono);
+  background: var(--bg); color: var(--muted); border: 1.5px solid var(--line);
+}
+li[data-state="pass"] .mark { background: var(--good-bg); color: var(--good); border-color: var(--good); }
+li[data-state="fail"] .mark { background: var(--bad-bg); color: var(--bad); border-color: var(--bad); }
+.rule-text { min-width: 0; }
+.rule-text small { display: block; color: var(--muted); font-size: 13px; }
+li[data-state="fail"] .rule-text small { color: var(--bad); }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips button { font: 500 13px var(--font-mono); padding: 6px 10px; display: inline-flex; gap: 8px; align-items: center; max-width: 100%; overflow-wrap: anywhere; text-align: left; }
+.chips .tag { font-size: 11px; font-weight: 700; }
+.chips .ok .tag { color: var(--good); }
+.chips .no .tag { color: var(--bad); }
+
+footer { color: var(--muted); font-size: 13px; max-width: 60ch; }
+@media (prefers-reduced-motion: no-preference) {
+  input[type="text"], .verdict { transition: border-color .15s, background-color .15s, color .15s; }
+}

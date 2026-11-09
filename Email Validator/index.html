@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Email Validator</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+<main>
+  <header>
+    <h1>Email Validator</h1>
+    <p class="lede">Type an address and each rule is checked as you go. Nothing leaves this page.</p>
+  </header>
+
+  <section class="panel" aria-labelledby="in-label">
+    <form id="form" novalidate>
+      <label for="email" id="in-label">Email address</label>
+      <div class="field">
+        <input type="text" id="email" name="email" inputmode="email" autocomplete="off" autocapitalize="off" spellcheck="false" value="harry.dev+news@gmial.com" aria-describedby="verdict">
+        <button type="button" id="clear">Clear</button>
+      </div>
+      <div class="verdict" id="verdict" role="status" aria-live="polite" data-state="idle"><span class="dot"></span><span id="verdict-text">Start typing an address.</span></div>
+      <div class="suggest" id="suggest" hidden></div>
+    </form>
+  </section>
+
+  <section class="panel" aria-labelledby="parsed-h">
+    <h2 id="parsed-h">How it reads</h2>
+    <div class="parsed" id="parsed"></div>
+    <div class="legend"><span class="l">local part</span><span class="d">domain</span><span class="t">top-level domain</span></div>
+  </section>
+
+  <section class="panel" aria-labelledby="rules-h">
+    <h2 id="rules-h">Rules checked</h2>
+    <ul class="rules" id="rules"></ul>
+  </section>
+
+  <section class="panel" aria-labelledby="ex-h">
+    <h2 id="ex-h">Try these</h2>
+    <div class="chips" id="examples"></div>
+  </section>
+
+  <footer>This checks the shape of an address against the common rules in RFC 5321 and 5322. It cannot tell whether a mailbox exists. Only sending a confirmation email can do that.</footer>
+</main>
+
+<script src="script.js"></script>
+
+</body>
+</html>
