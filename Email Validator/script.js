@@ -66,7 +66,7 @@
   ];
 
   var EXAMPLES = [
-    ["harry@codewithharry.com", true],
+    ["ritesh@codewithritesh.com", true],
     ["first.last+tag@sub.example.co.in", true],
     ["user@@example.com", false],
     ["no-at-sign.example.com", false],
